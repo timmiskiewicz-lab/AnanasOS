@@ -15,10 +15,10 @@ strings:
   versionedName: AnanasOS 1.0
   shortVersionedName: AnanasOS 1.0
   bootloaderEntryName: AnanasOS
-  productUrl: https://github.com/Ananasowy/AnanasOS
-  supportUrl: https://github.com/Ananasowy/AnanasOS
-  knownIssuesUrl: https://github.com/Ananasowy/AnanasOS
-  releaseNotesUrl: https://github.com/Ananasowy/AnanasOS
+  productUrl: https://github.com/timmiskiewicz-lab/AnanasOS
+  supportUrl: https://github.com/timmiskiewicz-lab/AnanasOS
+  knownIssuesUrl: https://github.com/timmiskiewicz-lab/AnanasOS
+  releaseNotesUrl: https://github.com/timmiskiewicz-lab/AnanasOS
 
 images:
   productLogo: "logo.png"
