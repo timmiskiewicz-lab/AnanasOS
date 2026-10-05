@@ -1,0 +1,22 @@
+#!/bin/bash
+if [ "$#" -lt 1 ]; then
+    echo "Użycie: ananas-appimage plik.AppImage" >&2
+    exit 1
+fi
+
+target=$(readlink -f -- "$1") || exit 1
+if [ ! -f "$target" ]; then
+    echo "Nie ma takiego pliku: $1" >&2
+    exit 1
+fi
+
+chmod +x -- "$target" 2>/dev/null || true
+
+if ! grep -q fuse /proc/filesystems 2>/dev/null; then
+    if command -v modprobe >/dev/null 2>&1; then
+        modprobe fuse 2>/dev/null || sudo -n modprobe fuse 2>/dev/null || true
+    fi
+fi
+
+"$target" && exit 0
+exec "$target" --appimage-extract-and-run

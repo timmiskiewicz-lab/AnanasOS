@@ -1,0 +1,6 @@
+#!/bin/bash
+if getent passwd ananas | grep -q "Użytkownik live"; then
+    deluser --remove-home ananas || true
+fi
+rm -f /etc/sudoers.d/ananas /etc/polkit-1/rules.d/49-ananas-live.rules
+exit 0

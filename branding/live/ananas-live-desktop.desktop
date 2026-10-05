@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=AnanasOS live desktop
+Exec=/usr/local/bin/ananas-live-desktop
+Terminal=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
+OnlyShowIn=XFCE;

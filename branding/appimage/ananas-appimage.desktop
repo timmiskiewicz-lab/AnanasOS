@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Uruchom AppImage
+Name[en]=Run AppImage
+Exec=ananas-appimage %f
+Terminal=false
+NoDisplay=true
+MimeType=application/vnd.appimage;

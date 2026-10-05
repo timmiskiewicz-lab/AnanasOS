@@ -1,0 +1,22 @@
+#!/bin/bash
+grep -q 'boot=casper' /proc/cmdline || exit 0
+[ -f "$HOME/.ananas-desktop-done" ] && exit 0
+
+desktop=$(xdg-user-dir DESKTOP 2>/dev/null || true)
+if [ -z "$desktop" ] || [ "$desktop" = "$HOME" ]; then
+    if [ -d "$HOME/Pulpit" ] || [ "${LANG:-}" = pl_PL.UTF-8 ]; then
+        desktop="$HOME/Pulpit"
+    else
+        desktop="$HOME/Desktop"
+    fi
+fi
+
+mkdir -p "$desktop"
+install -m 0755 /usr/share/applications/ananas-install.desktop "$desktop/ananas-install.desktop"
+
+if command -v sha256sum >/dev/null 2>&1 && command -v gio >/dev/null 2>&1; then
+    sum=$(sha256sum "$desktop/ananas-install.desktop" | awk '{print $1}')
+    gio set "$desktop/ananas-install.desktop" metadata::xfce-exe-checksum "$sum" || true
+fi
+
+touch "$HOME/.ananas-desktop-done"

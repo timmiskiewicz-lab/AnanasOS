@@ -1,0 +1,11 @@
+NAME="AnanasOS"
+VERSION="1.0"
+ID=ananasos
+ID_LIKE=ubuntu
+PRETTY_NAME="AnanasOS 1.0"
+VERSION_ID="1.0"
+VERSION_CODENAME=noble
+UBUNTU_CODENAME=noble
+HOME_URL="https://github.com/Ananasowy/AnanasOS"
+SUPPORT_URL="https://github.com/Ananasowy/AnanasOS"
+BUG_REPORT_URL="https://github.com/Ananasowy/AnanasOS/issues"

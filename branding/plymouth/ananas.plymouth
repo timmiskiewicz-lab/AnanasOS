@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=AnanasOS
+Description=AnanasOS boot splash
+ModuleName=script
+
+[script]
+ScriptFile=/usr/share/plymouth/themes/ananas/ananas.script
+ImageDir=/usr/share/plymouth/themes/ananas

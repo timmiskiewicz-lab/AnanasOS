@@ -1,0 +1,41 @@
+#!/bin/sh
+img=/usr/share/ananas/wallpaper.png
+[ -f "$img" ] || exit 0
+
+i=0
+while [ "$i" -lt 40 ]; do
+    xfconf-query -c xfce4-desktop -l >/dev/null 2>&1 && break
+    i=$((i + 1))
+    sleep 0.25
+done
+
+set_monitor() {
+    mon="$1"
+    xfconf-query -c xfce4-desktop -n -t string -s "$img" \
+        -p "/backdrop/screen0/${mon}/workspace0/last-image" || true
+    xfconf-query -c xfce4-desktop -n -t int -s 5 \
+        -p "/backdrop/screen0/${mon}/workspace0/image-style" || true
+}
+
+xfconf-query -c xfce4-desktop -l 2>/dev/null |
+    sed -n 's|^/backdrop/screen0/\(monitor[^/]*\)/.*|\1|p' |
+    sort -u |
+    while read -r mon; do
+        set_monitor "$mon"
+    done
+
+for mon in \
+    monitor0 \
+    monitorscreen \
+    monitorVirtual-1 \
+    monitorVirtual-0 \
+    monitorVGA-1 \
+    monitorNone-1 \
+    monitorHDMI-1 \
+    monitorDP-1 \
+    monitorLVDS-1 \
+    monitorDVI-1 \
+    monitorBochs-1
+do
+    set_monitor "$mon"
+done

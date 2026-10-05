@@ -1,0 +1,53 @@
+#!/bin/sh
+
+PREREQ=""
+prereqs()
+{
+    echo "$PREREQ"
+}
+
+case $1 in
+    prereqs)
+        prereqs
+        exit 0
+        ;;
+esac
+
+set +e
+
+USERNAME=ananas
+if [ -f /root/etc/casper.conf ]; then
+    # shellcheck disable=SC1091
+    . /root/etc/casper.conf
+fi
+
+if [ -n "$USERNAME" ]; then
+    echo "${USERNAME}:${USERNAME}" | chroot /root chpasswd
+fi
+
+for conf in /root/etc/lightdm/lightdm.conf /root/etc/lightdm/lightdm.conf.d/*.conf; do
+    if [ -f "$conf" ]; then
+        sed -i '/autologin-user/d;/autologin-user-timeout/d;/autologin-session/d;/autologin-guest/d' "$conf"
+    fi
+done
+
+mkdir -p /root/etc/lightdm/lightdm.conf.d
+cat > /root/etc/lightdm/lightdm.conf.d/50-ananas-live.conf << EOF
+[Seat:*]
+greeter-session=lightdm-gtk-greeter
+user-session=xfce
+greeter-hide-users=false
+allow-guest=false
+greeter-show-manual-login=true
+EOF
+
+if [ -f /root/etc/lightdm/lightdm-gtk-greeter.conf ]; then
+    sed -i 's|^background=.*|background=/usr/share/ananas/login-live.png|' /root/etc/lightdm/lightdm-gtk-greeter.conf
+fi
+
+mkdir -p /root/etc/systemd/system/multi-user.target.wants
+if [ -e /root/usr/lib/systemd/system/ssh.service ]; then
+    ln -sfn /usr/lib/systemd/system/ssh.service /root/etc/systemd/system/multi-user.target.wants/ssh.service
+elif [ -e /root/lib/systemd/system/ssh.service ]; then
+    ln -sfn /lib/systemd/system/ssh.service /root/etc/systemd/system/multi-user.target.wants/ssh.service
+fi

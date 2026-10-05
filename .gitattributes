@@ -1,0 +1,14 @@
+* text=auto
+*.sh text eol=lf
+*.py text eol=lf
+*.script text eol=lf
+*.service text eol=lf
+*.desktop text eol=lf
+*.conf text eol=lf
+*.xml text eol=lf
+*.plymouth text eol=lf
+*.cfg text eol=lf
+*.rules text eol=lf
+*.list text eol=lf
+logo.png binary
+*.png binary

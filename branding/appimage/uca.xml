@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>system-run</icon>
+	<name>Uruchom AppImage</name>
+	<submenu></submenu>
+	<unique-id>1710000001</unique-id>
+	<command>ananas-appimage %f</command>
+	<description>Uruchom pakiet AppImage</description>
+	<range></range>
+	<patterns>*.AppImage;*.appimage</patterns>
+	<startup-notify/>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+</actions>

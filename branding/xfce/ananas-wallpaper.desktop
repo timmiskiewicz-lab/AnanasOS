@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Tapeta AnanasOS
+Exec=/usr/local/bin/ananas-wallpaper
+NoDisplay=true
+X-GNOME-Autostart-enabled=true

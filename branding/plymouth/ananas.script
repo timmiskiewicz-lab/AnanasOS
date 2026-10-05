@@ -1,0 +1,23 @@
+Window.SetBackgroundTopColor (0.0, 0.0, 0.0);
+Window.SetBackgroundBottomColor (0.0, 0.0, 0.0);
+
+logo_image = Image ("logo.png");
+logo_sprite = Sprite (logo_image);
+word_image = Image ("wordmark.png");
+word_sprite = Sprite (word_image);
+
+fun place_sprites ()
+{
+    if (Window.GetWidth () < 64)
+    {
+        return;
+    }
+    y = Window.GetHeight () / 2 - logo_image.GetHeight () / 2 - word_image.GetHeight () / 2 - 16;
+    logo_sprite.SetX (Window.GetWidth () / 2 - logo_image.GetWidth () / 2);
+    logo_sprite.SetY (y);
+    word_sprite.SetX (Window.GetWidth () / 2 - word_image.GetWidth () / 2);
+    word_sprite.SetY (y + logo_image.GetHeight () + 18);
+}
+
+place_sprites ();
+Window.SetRefreshFunction (place_sprites);
