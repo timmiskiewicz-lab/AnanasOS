@@ -6,19 +6,15 @@ AnanasOS nie jest powiązany z Canonical. Ubuntu jest znakiem towarowym Canonica
 
 ## Sesja live
 
-Po starcie z pendrive'a system pokazuje ekran logowania.
+Po starcie z pendrive'a system wchodzi od razu na pulpit, bez pytania o hasło. Menu startowe czeka, aż sam wybierzesz pozycję.
 
-- użytkownik: `ananas`
-- hasło: `ananas`
-
-Te dane są też na dole ekranu logowania. Na pulpicie jest ikona **Zainstaluj AnanasOS**.
+Na pulpicie jest plik **Install Linux**. Otwiera graficzny instalator. Tam wybiera się dysk albo wolumin i zakłada swoje konto.
 
 ## Instalacja na dysku
 
-1. Zaloguj się w sesji live.
-2. Otwórz **Zainstaluj AnanasOS**.
-3. Wybierz dysk, język i swoje konto.
-4. Po restarcie wyjmij pendrive i zaloguj się na konto utworzone w instalatorze.
+1. Na pulpicie live otwórz **Install Linux**.
+2. Wybierz dysk albo wolumin, język i swoje konto.
+3. Po restarcie wyjmij pendrive. Logowanie jest graficzne: klikasz swojego użytkownika i wpisujesz hasło ustawione w instalatorze.
 
 Instalator kasuje wybrany dysk, gdy zostawisz opcję wymazania dysku. Przed instalacją skopiuj z niego ważne pliki.
 

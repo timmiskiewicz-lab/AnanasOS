@@ -298,6 +298,11 @@ stage_configure() {
         "$CHROOT/etc/xdg/autostart/ananas-live-desktop.desktop"
     install -m 0755 "$SRC/branding/live/ananas-install.desktop" \
         "$CHROOT/usr/share/applications/ananas-install.desktop"
+    install -m 0755 "$SRC/branding/live/ananas-plymouth-quit" \
+        "$CHROOT/usr/local/bin/ananas-plymouth-quit"
+    mkdir -p "$CHROOT/etc/systemd/system/getty@tty1.service.d"
+    install -m 0644 "$SRC/branding/live/getty-tty1.conf" \
+        "$CHROOT/etc/systemd/system/getty@tty1.service.d/ananas.conf"
     install -m 0644 "$SRC/branding/live/49-ananas-live.rules" \
         "$CHROOT/etc/polkit-1/rules.d/49-ananas-live.rules"
 

@@ -1,10 +1,11 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Zainstaluj AnanasOS
-Name[en]=Install AnanasOS
-Comment=Zainstaluj AnanasOS na dysku tego komputera
-Comment[en]=Install AnanasOS onto this computer
+Name=Install Linux
+Name[pl]=Install Linux
+Comment=Graficzny instalator: dysk, wolumin i konto
+Comment[pl]=Graficzny instalator: dysk, wolumin i konto
+Comment[en]=Graphical installer: disk, volume and account
 Exec=pkexec calamares
 Icon=ananas
 Terminal=false
