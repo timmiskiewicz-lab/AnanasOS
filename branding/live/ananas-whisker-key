@@ -1,0 +1,14 @@
+#!/bin/sh
+# Bind the Windows key to the start menu after the settings service is up.
+i=0
+while [ "$i" -lt 30 ]; do
+    if xfconf-query -c xfce4-keyboard-shortcuts -l >/dev/null 2>&1; then
+        break
+    fi
+    sleep 0.5
+    i=$((i + 1))
+done
+xfconf-query -c xfce4-keyboard-shortcuts \
+    -p '/commands/custom/<Super>' \
+    -n -t string -s 'xfce4-popup-whiskermenu' || true
+exit 0

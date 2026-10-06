@@ -172,7 +172,7 @@ stage_packages() {
         grub-common grub-pc-bin grub-efi-amd64-bin grub-efi-amd64-signed shim-signed \
         plymouth network-manager network-manager-gnome \
         locales tzdata keyboard-configuration console-setup \
-        bash-completion nano less htop curl wget ca-certificates gnupg \
+        bash bash-completion command-not-found nano less htop curl wget ca-certificates gnupg \
         unzip zip file-roller dosfstools e2fsprogs parted efibootmgr rsync \
         openssh-server
 
@@ -183,7 +183,7 @@ stage_packages() {
         xserver-xorg-video-fbdev xserver-xorg-video-qxl \
         xserver-xorg-video-nouveau xserver-xorg-video-amdgpu \
         xserver-xorg-video-ati \
-        xfce4 xfce4-terminal xfce4-power-manager xfce4-pulseaudio-plugin \
+        xfce4 xfce4-whiskermenu-plugin xfce4-terminal xfce4-power-manager xfce4-pulseaudio-plugin \
         xfce4-screenshooter thunar thunar-archive-plugin thunar-volman \
         mousepad lightdm lightdm-gtk-greeter dbus-x11 \
         policykit-1 polkitd pkexec mate-polkit \
@@ -285,6 +285,48 @@ stage_configure() {
         "$CHROOT/etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml"
     install -m 0644 "$SRC/branding/xfce/xsettings.xml" \
         "$CHROOT/etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml"
+    mkdir -p "$CHROOT/etc/skel/.config/xfce4/panel"
+    install -m 0644 "$SRC/branding/xfce/whiskermenu-1.rc" \
+        "$CHROOT/etc/skel/.config/xfce4/panel/whiskermenu-1.rc"
+    sed -i 's/value="applicationsmenu"/value="whiskermenu"/' \
+        "$CHROOT/etc/xdg/xfce4/panel/default.xml"
+    sed -i 's|^#DSHELL=/bin/bash|DSHELL=/bin/bash|' "$CHROOT/etc/adduser.conf"
+    sed -i 's/^#force_color_prompt=yes/force_color_prompt=yes/' "$CHROOT/etc/skel/.bashrc"
+    python3 - "$CHROOT/etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml" << 'PY'
+import sys
+from pathlib import Path
+p = Path(sys.argv[1])
+text = p.read_text()
+text = text.replace(
+    'value="xfce4-popup-applicationsmenu"',
+    'value="xfce4-popup-whiskermenu"',
+)
+super_key = '      <property name="&lt;Super&gt;" type="string" value="xfce4-popup-whiskermenu"/>'
+if super_key not in text:
+    text = text.replace(
+        '      <property name="&lt;Alt&gt;F1" type="string" value="xfce4-popup-whiskermenu"/>',
+        '      <property name="&lt;Alt&gt;F1" type="string" value="xfce4-popup-whiskermenu"/>\n' + super_key,
+        1,
+    )
+marker = '  <property name="xfwm4" type="empty">'
+custom = '''    <property name="custom" type="empty">
+      <property name="&lt;Super&gt;" type="string" value="xfce4-popup-whiskermenu"/>
+    </property>
+  </property>
+'''
+if 'name="custom"' not in text and marker in text:
+    text = text.replace(
+        '    </property>\n  </property>\n' + marker,
+        '    </property>\n' + custom + marker,
+        1,
+    )
+p.write_text(text)
+PY
+    mkdir -p "$CHROOT/etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml"
+    cp -a "$CHROOT/etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml" \
+        "$CHROOT/etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml"
+    cp -a "$CHROOT/etc/xdg/xfce4/panel/default.xml" \
+        "$CHROOT/etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml"
     install -m 0644 "$SRC/branding/xfce/mimeapps.list" "$CHROOT/etc/xdg/mimeapps.list"
     install -m 0644 "$SRC/branding/xfce/mimeapps.list" "$CHROOT/etc/skel/.config/mimeapps.list"
     install -m 0755 "$SRC/branding/xfce/ananas-wallpaper" "$CHROOT/usr/local/bin/ananas-wallpaper"
@@ -302,6 +344,10 @@ stage_configure() {
         "$CHROOT/usr/share/initramfs-tools/scripts/casper-bottom/99ananas"
     install -m 0644 "$SRC/branding/live/ananas-live-desktop.desktop" \
         "$CHROOT/etc/xdg/autostart/ananas-live-desktop.desktop"
+    install -m 0755 "$SRC/branding/live/ananas-whisker-key" \
+        "$CHROOT/usr/local/bin/ananas-whisker-key"
+    install -m 0644 "$SRC/branding/live/ananas-whisker-key.desktop" \
+        "$CHROOT/etc/xdg/autostart/ananas-whisker-key.desktop"
     install -m 0755 "$SRC/branding/live/ananas-install.desktop" \
         "$CHROOT/usr/share/applications/ananas-install.desktop"
     install -m 0755 "$SRC/branding/live/ananas-plymouth-quit" \

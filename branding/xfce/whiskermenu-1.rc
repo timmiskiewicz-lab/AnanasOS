@@ -1,0 +1,17 @@
+button-icon=/usr/share/ananas/icon-256.png
+button-title=Start
+show-button-title=false
+launcher-show-name=true
+hover-switch-category=false
+show-command-lockscreen=true
+show-command-switchuser=false
+show-command-logoutsession=true
+show-command-logout=true
+show-command-restart=true
+show-command-shutdown=true
+show-command-suspend=true
+show-command-hibernate=true
+command-lockscreen=xflock4
+command-logout=xfce4-session-logout
+menu-width=440
+menu-height=540

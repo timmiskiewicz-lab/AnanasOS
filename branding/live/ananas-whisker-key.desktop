@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Klawisz Windows
+Exec=/usr/local/bin/ananas-whisker-key
+OnlyShowIn=XFCE;
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
