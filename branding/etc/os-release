@@ -1,9 +1,9 @@
 NAME="AnanasOS"
-VERSION="1.0"
+VERSION="1.1"
 ID=ananasos
 ID_LIKE=ubuntu
-PRETTY_NAME="AnanasOS 1.0"
-VERSION_ID="1.0"
+PRETTY_NAME="AnanasOS 1.1"
+VERSION_ID="1.1"
 VERSION_CODENAME=noble
 UBUNTU_CODENAME=noble
 HOME_URL="https://github.com/timmiskiewicz-lab/AnanasOS"

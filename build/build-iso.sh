@@ -18,7 +18,8 @@ if [ -d /mnt/c/Users/miski ]; then
 else
     OUT_DIR="${OUT_DIR:-$WORK/output}"
 fi
-OUT_ISO="$OUT_DIR/AnanasOS-1.0-amd64.iso"
+VERSION="$(tr -d '[:space:]' < "$SRC/VERSION")"
+OUT_ISO="$OUT_DIR/AnanasOS-${VERSION}-amd64.iso"
 
 mkdir -p "$WORK" "$STAMPS" "$OUT_DIR"
 exec > >(tee -a "$LOG") 2>&1
@@ -177,6 +178,11 @@ stage_packages() {
 
     apt_install \
         xorg xserver-xorg mesa-utils mesa-vulkan-drivers \
+        mesa-va-drivers mesa-vdpau-drivers \
+        xserver-xorg-video-all xserver-xorg-video-vesa \
+        xserver-xorg-video-fbdev xserver-xorg-video-qxl \
+        xserver-xorg-video-nouveau xserver-xorg-video-amdgpu \
+        xserver-xorg-video-ati \
         xfce4 xfce4-terminal xfce4-power-manager xfce4-pulseaudio-plugin \
         xfce4-screenshooter thunar thunar-archive-plugin thunar-volman \
         mousepad lightdm lightdm-gtk-greeter dbus-x11 \
@@ -315,7 +321,7 @@ stage_configure() {
     install -m 0644 "$SRC/branding/calamares/branding.desc" "$CHROOT/etc/calamares/branding/ananas/branding.desc"
     install -m 0644 "$WORK/artwork/logo-trimmed.png" "$CHROOT/etc/calamares/branding/ananas/logo.png"
     cp -a "$SRC/branding/calamares/modules/." "$CHROOT/etc/calamares/modules/"
-    printf 'AnanasOS 1.0\nBased on Ubuntu 24.04 LTS\n' > "$CHROOT/etc/ananasos-release"
+    printf 'AnanasOS %s\nBased on Ubuntu 24.04 LTS\n' "$VERSION" > "$CHROOT/etc/ananasos-release"
 
     strip_cr \
         "$CHROOT/usr/local" \
@@ -362,6 +368,18 @@ stage_configure() {
 
     chroot_do apt-get purge -y gdm3 gnome-shell ubuntu-session || true
     chroot_do apt-get autoremove -y || true
+    rm -f \
+        "$CHROOT/etc/systemd/system/multi-user.target.wants/casper-md5check.service" \
+        "$CHROOT/etc/systemd/system/multi-user.target.wants/apport.service" \
+        "$CHROOT/etc/systemd/system/multi-user.target.wants/whoopsie.service" \
+        "$CHROOT/etc/systemd/system/apport-autoreport.path" \
+        "$CHROOT/etc/systemd/system/multi-user.target.wants/apport-autoreport.service"
+    mkdir -p "$CHROOT/etc/systemd/system/apport.service.d"
+    cat > "$CHROOT/etc/systemd/system/apport.service.d/disable.conf" << 'EOF'
+[Service]
+ExecStart=
+ExecStart=/bin/true
+EOF
     rm -f "$CHROOT/etc/systemd/system/multi-user.target.wants/casper-md5check.service"
     mkdir -p "$CHROOT/etc/systemd/system/casper-md5check.service.d"
     cat > "$CHROOT/etc/systemd/system/casper-md5check.service.d/disable.conf" << 'EOF'
@@ -439,13 +457,6 @@ PY
 
 shrink_rootfs() {
     log "squash: porządki rozmiaru"
-    rm -rf \
-        "$CHROOT/usr/lib/firmware/nvidia" \
-        "$CHROOT/lib/firmware/nvidia" \
-        "$CHROOT/usr/lib/firmware/amdgpu" \
-        "$CHROOT/lib/firmware/amdgpu" \
-        "$CHROOT/usr/lib/firmware/radeon" \
-        "$CHROOT/lib/firmware/radeon"
     chroot_do apt-get clean || true
     rm -rf "$CHROOT/var/lib/apt/lists/"* "$CHROOT/var/cache/apt/archives/"*.deb
     mkdir -p "$CHROOT/var/lib/apt/lists/partial"
@@ -597,7 +608,7 @@ stage_iso() {
     sed 's/\r$//' "$SRC/branding/grub/grub.cfg" > "$ISO_ROOT/boot/grub/grub.cfg"
     sed 's/\r$//' "$SRC/branding/grub/loopback.cfg" > "$ISO_ROOT/boot/grub/loopback.cfg"
     cp -f "$WORK/artwork/grub-background.png" "$ISO_ROOT/boot/grub/ananas-boot.png"
-    printf '%s\n' 'AnanasOS 1.0 (noble) amd64' > "$ISO_ROOT/.disk/info"
+    printf '%s\n' "AnanasOS ${VERSION} (noble) amd64" > "$ISO_ROOT/.disk/info"
     touch "$ISO_ROOT/.disk/base_installable"
     make_boot_images
 
@@ -629,7 +640,7 @@ stage_iso() {
         -output "$OUT_ISO" \
         "$ISO_ROOT"
 
-    sha256sum "$OUT_ISO" | tee "$OUT_DIR/AnanasOS-1.0-amd64.iso.sha256"
+    sha256sum "$OUT_ISO" | tee "$OUT_DIR/AnanasOS-${VERSION}-amd64.iso.sha256"
     ls -lh "$OUT_ISO"
     mark iso
     log "Gotowe: $OUT_ISO"

@@ -1,4 +1,4 @@
-# AnanasOS 1.0
+# AnanasOS 1.1
 
 Prosty system na bazie Ubuntu 24.04 LTS, na komputery 64-bitowe (Intel i AMD). Ma pulpit, ekran logowania, eksplorator plików, terminal, Firefoksa i obsługę AppImage. Da się go uruchomić z pendrive'a i zainstalować na dysku.
 
@@ -20,7 +20,7 @@ Instalator kasuje wybrany dysk, gdy zostawisz opcję wymazania dysku. Przed inst
 
 ## Pendrive
 
-Obraz nazywa się `AnanasOS-1.0-amd64.iso`. Wgrywa się go programem, który robi kopię 1:1:
+Obraz nazywa się `AnanasOS-1.1-amd64.iso`. Wgrywa się go programem, który robi kopię 1:1:
 
 - balenaEtcher, albo
 - Rufus w trybie **DD**
@@ -36,7 +36,7 @@ Zwykłe skopiowanie pliku ISO na pendrive nie wystarczy. Komputer musi startowa�
 - Firefox
 - AppImage: dwuklik albo „Uruchom AppImage” w menu pliku. Potrzebne biblioteki fuse są już w systemie
 - instalator Calamares
-- sieć, dźwięk, dyski Windows (NTFS), firmware kart Intela
+- sieć, dźwięk, dyski Windows (NTFS), sterowniki i firmware kart Intel, AMD i NVIDIA
 - język polski i angielski. Sesja live startuje po polsku
 
 Dodatkowe programy instaluje się w terminalu przez `sudo apt update` i `sudo apt install nazwa`.

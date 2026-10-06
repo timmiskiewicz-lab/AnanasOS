@@ -1,6 +1,6 @@
 #!/bin/sh
 if command -v timeout >/dev/null 2>&1; then
-    timeout 5 plymouth quit || true
+    timeout -k 2 5 plymouth quit || true
 else
     plymouth quit || true
 fi
