@@ -1,0 +1,39 @@
+#!/bin/sh
+# If the desktop never appears, try the plain framebuffer once, then a text console.
+set +e
+
+session_up() {
+    pgrep -x xfce4-session >/dev/null 2>&1 && return 0
+    pgrep -x lightdm-gtk-greeter >/dev/null 2>&1 && return 0
+    return 1
+}
+
+sleep 50
+if session_up; then
+    exit 0
+fi
+state="$(systemctl is-active lightdm 2>/dev/null || true)"
+if [ "$state" = "activating" ]; then
+    sleep 40
+fi
+if session_up; then
+    exit 0
+fi
+
+if [ -f /run/ananas-display-fbdev ]; then
+    systemctl unmask getty@tty1.service >/dev/null 2>&1 || true
+    systemctl start getty@tty1.service >/dev/null 2>&1 || true
+    chvt 1 || true
+    exit 0
+fi
+
+touch /run/ananas-display-fbdev
+mkdir -p /etc/X11/xorg.conf.d
+cat > /etc/X11/xorg.conf.d/10-ananas-gpu.conf << 'EOF'
+Section "Device"
+    Identifier "AnanasGPU"
+    Driver "fbdev"
+EndSection
+EOF
+systemctl restart lightdm || true
+exit 0

@@ -306,13 +306,21 @@ stage_configure() {
         "$CHROOT/usr/share/applications/ananas-install.desktop"
     install -m 0755 "$SRC/branding/live/ananas-plymouth-quit" \
         "$CHROOT/usr/local/bin/ananas-plymouth-quit"
+    install -m 0755 "$SRC/branding/live/ananas-display-setup" \
+        "$CHROOT/usr/local/bin/ananas-display-setup"
+    install -m 0755 "$SRC/branding/live/ananas-display-fallback" \
+        "$CHROOT/usr/local/sbin/ananas-display-fallback"
     install -m 0755 "$SRC/branding/live/ananas-live-autologin" \
         "$CHROOT/usr/local/sbin/ananas-live-autologin"
     install -m 0644 "$SRC/branding/live/ananas-live-autologin.service" \
         "$CHROOT/etc/systemd/system/ananas-live-autologin.service"
+    install -m 0644 "$SRC/branding/live/ananas-display-fallback.service" \
+        "$CHROOT/etc/systemd/system/ananas-display-fallback.service"
     mkdir -p "$CHROOT/etc/systemd/system/graphical.target.wants"
     ln -sfn /etc/systemd/system/ananas-live-autologin.service \
         "$CHROOT/etc/systemd/system/graphical.target.wants/ananas-live-autologin.service"
+    ln -sfn /etc/systemd/system/ananas-display-fallback.service \
+        "$CHROOT/etc/systemd/system/graphical.target.wants/ananas-display-fallback.service"
     ln -sfn /dev/null "$CHROOT/etc/systemd/system/getty@tty1.service"
     install -m 0644 "$SRC/branding/live/49-ananas-live.rules" \
         "$CHROOT/etc/polkit-1/rules.d/49-ananas-live.rules"

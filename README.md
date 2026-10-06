@@ -1,4 +1,4 @@
-# AnanasOS 1.1
+# AnanasOS 1.2
 
 Prosty system na bazie Ubuntu 24.04 LTS, na komputery 64-bitowe (Intel i AMD). Ma pulpit, ekran logowania, eksplorator plików, terminal, Firefoksa i obsługę AppImage. Da się go uruchomić z pendrive'a i zainstalować na dysku.
 
@@ -6,7 +6,7 @@ AnanasOS nie jest powiązany z Canonical. Ubuntu jest znakiem towarowym Canonica
 
 ## Sesja live
 
-Po starcie z pendrive'a system wchodzi od razu na pulpit, bez pytania o hasło. Menu startowe czeka, aż sam wybierzesz pozycję.
+Po starcie z pendrive'a system wchodzi od razu na pulpit, bez pytania o hasło. Menu startowe czeka, aż sam wybierzesz pozycję. Gdy po logo zostaje czarny ekran, wybierz w menu pozycję trybu awaryjnego.
 
 Na pulpicie jest plik **Install Linux**. Otwiera graficzny instalator. Tam wybiera się dysk albo wolumin i zakłada swoje konto.
 
@@ -20,7 +20,7 @@ Instalator kasuje wybrany dysk, gdy zostawisz opcję wymazania dysku. Przed inst
 
 ## Pendrive
 
-Obraz nazywa się `AnanasOS-1.1-amd64.iso`. Wgrywa się go programem, który robi kopię 1:1:
+Obraz nazywa się `AnanasOS-1.2-amd64.iso`. Wgrywa się go programem, który robi kopię 1:1:
 
 - balenaEtcher, albo
 - Rufus w trybie **DD**

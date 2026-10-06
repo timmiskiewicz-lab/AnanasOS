@@ -1,0 +1,6 @@
+i915
+amdgpu
+radeon
+nouveau
+drm
+drm_kms_helper

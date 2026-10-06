@@ -25,7 +25,7 @@ autologin-user=${USERNAME}
 autologin-user-timeout=0
 autologin-session=xfce
 allow-guest=false
-display-setup-script=/usr/local/bin/ananas-plymouth-quit
+display-setup-script=/usr/local/bin/ananas-display-setup
 session-setup-script=/usr/local/bin/ananas-plymouth-quit
 EOF
 

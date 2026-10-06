@@ -1,0 +1,11 @@
+[Unit]
+Description=Zapasowy ekran AnanasOS
+After=display-manager.service lightdm.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/ananas-display-fallback
+RemainAfterExit=yes
+
+[Install]
+WantedBy=graphical.target

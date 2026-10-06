@@ -1,0 +1,40 @@
+#!/bin/sh
+# Runs before X. Pick a driver and hand the screen over without dropping to black.
+set +e
+mkdir -p /etc/X11/xorg.conf.d /run
+conf=/etc/X11/xorg.conf.d/10-ananas-gpu.conf
+
+write_fbdev() {
+    cat > "$conf" << 'EOF'
+Section "Device"
+    Identifier "AnanasGPU"
+    Driver "fbdev"
+EndSection
+EOF
+}
+
+write_modesetting() {
+    cat > "$conf" << 'EOF'
+Section "Device"
+    Identifier "AnanasGPU"
+    Driver "modesetting"
+EndSection
+EOF
+}
+
+if [ -f /run/ananas-display-fbdev ] || grep -qw nomodeset /proc/cmdline; then
+    write_fbdev
+elif ls /dev/dri/card* >/dev/null 2>&1; then
+    write_modesetting
+else
+    write_fbdev
+fi
+
+if command -v plymouth >/dev/null 2>&1; then
+    if command -v timeout >/dev/null 2>&1; then
+        timeout -k 2 5 plymouth deactivate || true
+    else
+        plymouth deactivate || true
+    fi
+fi
+exit 0
