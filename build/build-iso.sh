@@ -362,6 +362,13 @@ stage_configure() {
 
     chroot_do apt-get purge -y gdm3 gnome-shell ubuntu-session || true
     chroot_do apt-get autoremove -y || true
+    rm -f "$CHROOT/etc/systemd/system/multi-user.target.wants/casper-md5check.service"
+    mkdir -p "$CHROOT/etc/systemd/system/casper-md5check.service.d"
+    cat > "$CHROOT/etc/systemd/system/casper-md5check.service.d/disable.conf" << 'EOF'
+[Service]
+ExecStart=
+ExecStart=/bin/true
+EOF
     chroot_do systemctl enable lightdm NetworkManager systemd-resolved || true
     chroot_do systemctl disable gdm3 || true
     chroot_do systemctl mask gdm3 || true
