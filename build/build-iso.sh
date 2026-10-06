@@ -267,7 +267,7 @@ stage_configure() {
     install -m 0644 "$WORK/artwork/icon-256.png" "$CHROOT/usr/share/ananas/icon-256.png"
     install -m 0644 "$WORK/artwork/icon-256.png" "$CHROOT/usr/share/icons/hicolor/256x256/apps/ananas.png"
     install -m 0644 "$WORK/artwork/logo-trimmed.png" "$CHROOT/usr/share/ananas/logo.png"
-    install -m 0644 "$WORK/artwork/plymouth-logo.png" "$CHROOT/usr/share/plymouth/themes/ananas/logo.png"
+    install -m 0644 "$WORK/artwork/plymouth-splash.png" "$CHROOT/usr/share/plymouth/themes/ananas/logo.png"
     install -m 0644 "$WORK/artwork/plymouth-wordmark.png" "$CHROOT/usr/share/plymouth/themes/ananas/wordmark.png"
     install -m 0644 "$SRC/branding/plymouth/ananas.plymouth" "$CHROOT/usr/share/plymouth/themes/ananas/ananas.plymouth"
     install -m 0644 "$SRC/branding/plymouth/ananas.script" "$CHROOT/usr/share/plymouth/themes/ananas/ananas.script"
@@ -300,9 +300,14 @@ stage_configure() {
         "$CHROOT/usr/share/applications/ananas-install.desktop"
     install -m 0755 "$SRC/branding/live/ananas-plymouth-quit" \
         "$CHROOT/usr/local/bin/ananas-plymouth-quit"
-    mkdir -p "$CHROOT/etc/systemd/system/getty@tty1.service.d"
-    install -m 0644 "$SRC/branding/live/getty-tty1.conf" \
-        "$CHROOT/etc/systemd/system/getty@tty1.service.d/ananas.conf"
+    install -m 0755 "$SRC/branding/live/ananas-live-autologin" \
+        "$CHROOT/usr/local/sbin/ananas-live-autologin"
+    install -m 0644 "$SRC/branding/live/ananas-live-autologin.service" \
+        "$CHROOT/etc/systemd/system/ananas-live-autologin.service"
+    mkdir -p "$CHROOT/etc/systemd/system/graphical.target.wants"
+    ln -sfn /etc/systemd/system/ananas-live-autologin.service \
+        "$CHROOT/etc/systemd/system/graphical.target.wants/ananas-live-autologin.service"
+    ln -sfn /dev/null "$CHROOT/etc/systemd/system/getty@tty1.service"
     install -m 0644 "$SRC/branding/live/49-ananas-live.rules" \
         "$CHROOT/etc/polkit-1/rules.d/49-ananas-live.rules"
 
@@ -379,8 +384,6 @@ stage_configure() {
     fi
 
     if [ -f "$CHROOT/usr/share/initramfs-tools/scripts/casper-bottom/15autologin" ]; then
-        sed -i 's/if \[ -d \/root\/etc\/lightdm \]; then/if false; then/' \
-            "$CHROOT/usr/share/initramfs-tools/scripts/casper-bottom/15autologin"
         sed -i 's/if \[ -f \$GDMCustomFile \]; then/if false; then/' \
             "$CHROOT/usr/share/initramfs-tools/scripts/casper-bottom/15autologin"
     fi

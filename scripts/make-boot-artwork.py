@@ -123,7 +123,20 @@ def build(logo_path, out_dir):
 
     plymouth_logo = scale_width(logo, 420, nearest=True)
     plymouth_logo.save(out_dir / "plymouth-logo.png")
-    wordmark("AnanasOS", 92, stroke=5).save(out_dir / "plymouth-wordmark.png")
+    plymouth_word = wordmark("AnanasOS", 92, stroke=5)
+    plymouth_word.save(out_dir / "plymouth-wordmark.png")
+    gap = 18
+    splash = Image.new(
+        "RGBA",
+        (
+            max(plymouth_logo.width, plymouth_word.width),
+            plymouth_logo.height + gap + plymouth_word.height,
+        ),
+        (0, 0, 0, 0),
+    )
+    y = paste_center(splash, plymouth_logo, 0) + gap
+    paste_center(splash, plymouth_word, y)
+    splash.save(out_dir / "plymouth-splash.png")
 
     wall_logo = scale_width(logo, 430, nearest=True)
     wall_word = scale_width(title, 760)

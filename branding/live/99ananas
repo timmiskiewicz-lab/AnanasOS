@@ -27,6 +27,9 @@ fi
 
 mkdir -p /root/etc/lightdm/lightdm.conf.d
 cat > /root/etc/lightdm/lightdm.conf.d/50-ananas-live.conf << EOF
+[LightDM]
+minimum-vt=1
+
 [Seat:*]
 greeter-session=lightdm-gtk-greeter
 user-session=xfce
@@ -34,12 +37,9 @@ autologin-user=${USERNAME}
 autologin-user-timeout=0
 autologin-session=xfce
 allow-guest=false
+display-setup-script=/usr/local/bin/ananas-plymouth-quit
 session-setup-script=/usr/local/bin/ananas-plymouth-quit
 EOF
-
-if [ -f /root/etc/lightdm/lightdm-gtk-greeter.conf ]; then
-    sed -i 's|^background=.*|background=/usr/share/ananas/login-live.png|' /root/etc/lightdm/lightdm-gtk-greeter.conf
-fi
 
 mkdir -p /root/etc/systemd/system/multi-user.target.wants
 if [ -e /root/usr/lib/systemd/system/ssh.service ]; then

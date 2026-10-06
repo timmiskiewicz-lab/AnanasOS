@@ -1,0 +1,14 @@
+[Unit]
+Description=Autologowanie sesji live AnanasOS
+DefaultDependencies=no
+Before=display-manager.service lightdm.service
+After=systemd-user-sessions.service
+ConditionKernelCommandLine=boot=casper
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/ananas-live-autologin
+RemainAfterExit=yes
+
+[Install]
+WantedBy=graphical.target

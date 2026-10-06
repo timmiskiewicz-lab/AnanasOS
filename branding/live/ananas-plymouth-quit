@@ -1,3 +1,7 @@
 #!/bin/sh
-plymouth quit || true
+if command -v timeout >/dev/null 2>&1; then
+    timeout 5 plymouth quit || true
+else
+    plymouth quit || true
+fi
 exit 0

@@ -1,0 +1,35 @@
+#!/bin/sh
+grep -q 'boot=casper' /proc/cmdline || exit 0
+
+USERNAME=ananas
+if [ -f /etc/casper.conf ]; then
+    # shellcheck disable=SC1091
+    . /etc/casper.conf
+fi
+
+i=0
+while [ ! -d "/home/${USERNAME}" ] && [ "$i" -lt 30 ]; do
+    sleep 0.5
+    i=$((i + 1))
+done
+
+mkdir -p /etc/lightdm/lightdm.conf.d
+cat > /etc/lightdm/lightdm.conf.d/50-ananas-live.conf << EOF
+[LightDM]
+minimum-vt=1
+
+[Seat:*]
+greeter-session=lightdm-gtk-greeter
+user-session=xfce
+autologin-user=${USERNAME}
+autologin-user-timeout=0
+autologin-session=xfce
+allow-guest=false
+display-setup-script=/usr/local/bin/ananas-plymouth-quit
+session-setup-script=/usr/local/bin/ananas-plymouth-quit
+EOF
+
+if id "$USERNAME" >/dev/null 2>&1; then
+    passwd -u "$USERNAME" >/dev/null 2>&1 || true
+fi
+exit 0
