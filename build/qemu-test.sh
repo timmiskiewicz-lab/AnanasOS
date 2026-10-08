@@ -2,7 +2,7 @@
 # Boot-check an AnanasOS ISO. Content checks must pass. Screenshots are saved for review.
 set -euo pipefail
 
-ISO="${1:-/mnt/c/Users/miski/AnanasOS-iso/AnanasOS-1.4-amd64.iso}"
+ISO="${1:-/mnt/c/Users/miski/AnanasOS-iso/AnanasOS-1.5-amd64.iso}"
 OUT="${2:-/mnt/c/Users/miski/AnanasOS-iso/test}"
 WORK="${WORK:-$HOME/ananas-build}"
 

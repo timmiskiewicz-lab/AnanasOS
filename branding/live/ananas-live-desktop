@@ -16,7 +16,14 @@ install -m 0755 /usr/share/applications/ananas-install.desktop "$desktop/ananas-
 
 if command -v sha256sum >/dev/null 2>&1 && command -v gio >/dev/null 2>&1; then
     sum=$(sha256sum "$desktop/ananas-install.desktop" | awk '{print $1}')
-    gio set "$desktop/ananas-install.desktop" metadata::xfce-exe-checksum "$sum" || true
+    n=0
+    while [ "$n" -lt 20 ]; do
+        if gio set "$desktop/ananas-install.desktop" metadata::xfce-exe-checksum "$sum"; then
+            break
+        fi
+        sleep 0.5
+        n=$((n + 1))
+    done
 fi
 
 touch "$HOME/.ananas-desktop-done"

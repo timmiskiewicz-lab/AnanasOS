@@ -183,7 +183,7 @@ stage_packages() {
         xserver-xorg-video-fbdev xserver-xorg-video-qxl \
         xserver-xorg-video-nouveau xserver-xorg-video-amdgpu \
         xserver-xorg-video-ati \
-        xfce4 xfce4-whiskermenu-plugin xfce4-terminal xfce4-power-manager xfce4-pulseaudio-plugin \
+        xfce4 xfce4-whiskermenu-plugin xcape xfce4-terminal xfce4-power-manager xfce4-pulseaudio-plugin \
         xfce4-screenshooter thunar thunar-archive-plugin thunar-volman \
         mousepad lightdm lightdm-gtk-greeter dbus-x11 \
         policykit-1 polkitd pkexec mate-polkit \
@@ -301,25 +301,10 @@ text = text.replace(
     'value="xfce4-popup-applicationsmenu"',
     'value="xfce4-popup-whiskermenu"',
 )
-super_key = '      <property name="&lt;Super&gt;" type="string" value="xfce4-popup-whiskermenu"/>'
-if super_key not in text:
-    text = text.replace(
-        '      <property name="&lt;Alt&gt;F1" type="string" value="xfce4-popup-whiskermenu"/>',
-        '      <property name="&lt;Alt&gt;F1" type="string" value="xfce4-popup-whiskermenu"/>\n' + super_key,
-        1,
-    )
-marker = '  <property name="xfwm4" type="empty">'
-custom = '''    <property name="custom" type="empty">
-      <property name="&lt;Super&gt;" type="string" value="xfce4-popup-whiskermenu"/>
-    </property>
-  </property>
-'''
-if 'name="custom"' not in text and marker in text:
-    text = text.replace(
-        '    </property>\n  </property>\n' + marker,
-        '    </property>\n' + custom + marker,
-        1,
-    )
+text = text.replace(
+    '      <property name="&lt;Super&gt;" type="string" value="xfce4-popup-whiskermenu"/>\n',
+    '',
+)
 p.write_text(text)
 PY
     mkdir -p "$CHROOT/etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml"
@@ -348,6 +333,8 @@ PY
         "$CHROOT/usr/local/bin/ananas-whisker-key"
     install -m 0644 "$SRC/branding/live/ananas-whisker-key.desktop" \
         "$CHROOT/etc/xdg/autostart/ananas-whisker-key.desktop"
+    install -m 0755 "$SRC/branding/live/ananas-install" \
+        "$CHROOT/usr/local/bin/ananas-install"
     install -m 0755 "$SRC/branding/live/ananas-install.desktop" \
         "$CHROOT/usr/share/applications/ananas-install.desktop"
     install -m 0755 "$SRC/branding/live/ananas-plymouth-quit" \

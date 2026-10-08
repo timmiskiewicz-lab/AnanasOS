@@ -1,14 +1,25 @@
 #!/bin/sh
-# Bind the Windows key to the start menu after the settings service is up.
+# The Windows key is only a modifier, so XFCE will not run a shortcut on it.
+# xcape turns a bare tap into Alt+F1, which opens the start menu.
 i=0
-while [ "$i" -lt 30 ]; do
+while [ "$i" -lt 40 ]; do
     if xfconf-query -c xfce4-keyboard-shortcuts -l >/dev/null 2>&1; then
         break
     fi
     sleep 0.5
     i=$((i + 1))
 done
+
 xfconf-query -c xfce4-keyboard-shortcuts \
-    -p '/commands/custom/<Super>' \
+    -p '/commands/custom/<Alt>F1' \
     -n -t string -s 'xfce4-popup-whiskermenu' || true
+xfconf-query -c xfce4-keyboard-shortcuts \
+    -p '/commands/custom/<Super>' -r >/dev/null 2>&1 || true
+xfconf-query -c xfce4-keyboard-shortcuts \
+    -p '/commands/default/<Super>' -r >/dev/null 2>&1 || true
+
+if command -v xcape >/dev/null 2>&1; then
+    pkill -x xcape >/dev/null 2>&1 || true
+    xcape -e 'Super_L=Alt_L|F1;Super_R=Alt_L|F1' >/dev/null 2>&1 || true
+fi
 exit 0

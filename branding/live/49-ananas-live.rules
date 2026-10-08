@@ -1,5 +1,9 @@
 polkit.addRule(function(action, subject) {
-    if (subject.user == "ananas" && action.id.indexOf("calamares") !== -1) {
+    if (subject.user !== "ananas") {
+        return;
+    }
+    if (action.id === "com.github.calamares.calamares.pkexec.run" ||
+        (action.id && action.id.indexOf("calamares") !== -1)) {
         return polkit.Result.YES;
     }
 });

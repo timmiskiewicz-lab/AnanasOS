@@ -10,10 +10,10 @@ navigation: widget
 strings:
   productName: AnanasOS
   shortProductName: AnanasOS
-  version: "1.4"
-  shortVersion: "1.4"
-  versionedName: AnanasOS 1.4
-  shortVersionedName: AnanasOS 1.4
+  version: "1.5"
+  shortVersion: "1.5"
+  versionedName: AnanasOS 1.5
+  shortVersionedName: AnanasOS 1.5
   bootloaderEntryName: AnanasOS
   productUrl: https://github.com/timmiskiewicz-lab/AnanasOS
   supportUrl: https://github.com/timmiskiewicz-lab/AnanasOS

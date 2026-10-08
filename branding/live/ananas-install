@@ -1,0 +1,6 @@
+#!/bin/sh
+# Live installer. pkexec keeps the screen variables because the Calamares policy allows a GUI.
+if [ "$(id -u)" -eq 0 ]; then
+    exec /usr/bin/calamares "$@"
+fi
+exec pkexec /usr/bin/calamares "$@"
