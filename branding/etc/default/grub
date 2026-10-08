@@ -3,7 +3,7 @@ GRUB_TIMEOUT=-1
 GRUB_TIMEOUT_STYLE=menu
 GRUB_RECORDFAIL_TIMEOUT=-1
 GRUB_DISTRIBUTOR="AnanasOS"
-GRUB_CMDLINE_LINUX_DEFAULT="quiet splash vt.handoff=1"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash vt.handoff=1 nouveau.atomic=1"
 GRUB_CMDLINE_LINUX=""
 GRUB_BACKGROUND="/usr/share/ananas/grub-background.png"
 GRUB_GFXMODE=1920x1080,auto
