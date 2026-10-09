@@ -197,8 +197,8 @@ stage_packages() {
         xdg-desktop-portal xdg-desktop-portal-gtk \
         libxcb-xinerama0 libxcb-cursor0
 
-    apt_install --no-install-recommends calamares gparted || \
-        apt_install calamares gparted
+    apt_install --no-install-recommends calamares gparted qml-module-qtquick-window2 || \
+        apt_install calamares gparted qml-module-qtquick-window2
 
     if ! apt_install qt6-gtk-platformtheme; then
         log "packages: brak qt6-gtk-platformtheme, jadę dalej"
@@ -355,6 +355,8 @@ PY
     ln -sfn /etc/systemd/system/ananas-display-fallback.service \
         "$CHROOT/etc/systemd/system/graphical.target.wants/ananas-display-fallback.service"
     ln -sfn /dev/null "$CHROOT/etc/systemd/system/getty@tty1.service"
+    # Live shutdown otherwise waits forever on a hidden "remove the USB" prompt.
+    ln -sfn /dev/null "$CHROOT/etc/systemd/system/casper.service"
     install -m 0644 "$SRC/branding/live/49-ananas-live.rules" \
         "$CHROOT/etc/polkit-1/rules.d/49-ananas-live.rules"
 

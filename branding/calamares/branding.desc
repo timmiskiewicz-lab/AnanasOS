@@ -4,16 +4,19 @@ welcomeStyleCalamares: false
 welcomeExpandingLogo: true
 windowExpanding: normal
 windowSize: 800px,540px
-sidebar: logo
+windowPlacement: center
+sidebar: widget
 navigation: widget
+slideshow: "show.qml"
+slideshowAPI: 2
 
 strings:
   productName: AnanasOS
   shortProductName: AnanasOS
-  version: "1.5"
-  shortVersion: "1.5"
-  versionedName: AnanasOS 1.5
-  shortVersionedName: AnanasOS 1.5
+  version: "1.6"
+  shortVersion: "1.6"
+  versionedName: AnanasOS 1.6
+  shortVersionedName: AnanasOS 1.6
   bootloaderEntryName: AnanasOS
   productUrl: https://github.com/timmiskiewicz-lab/AnanasOS
   supportUrl: https://github.com/timmiskiewicz-lab/AnanasOS
